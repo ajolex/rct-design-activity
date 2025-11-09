@@ -231,39 +231,156 @@ def main():
 
 def render_design_workbook():
     """Render the design workbook steps interface."""
-    st.markdown("---")
-    st.header("📝 RCT Design Workbook")
+    from config import WORKBOOK_STEPS
     
+    # Initialize step tracking
+    if 'workbook_step' not in st.session_state:
+        st.session_state.workbook_step = 0
+    if 'workbook_responses' not in st.session_state:
+        st.session_state.workbook_responses = {}
+    
+    current = st.session_state.workbook_step
+    
+    # Custom CSS for workbook styling
     st.markdown("""
-    ### Work Through the Design Steps
+    <style>
+    .step-header {
+        background: linear-gradient(135deg, #164a7f 0%, #2fa6dc 100%);
+        color: white;
+        padding: 1.5rem 2rem;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 12px rgba(22, 74, 127, 0.3);
+    }
+    .step-number {
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        opacity: 0.9;
+        margin-bottom: 0.5rem;
+    }
+    .step-title {
+        font-size: 1.75rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    .step-goal {
+        font-size: 1.05rem;
+        opacity: 0.95;
+    }
+    .actions-box {
+        background: rgba(22, 74, 127, 0.06);
+        border-left: 4px solid #2fa6dc;
+        border-radius: 8px;
+        padding: 1.25rem;
+        margin: 1rem 0;
+    }
+    .tip-box {
+        background: rgba(47, 166, 220, 0.12);
+        border-left: 4px solid #2fa6dc;
+        border-radius: 8px;
+        padding: 1rem;
+        margin: 1rem 0;
+    }
+    .progress-dots {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin: 1.5rem 0;
+    }
+    .progress-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #ddd;
+    }
+    .progress-dot.active {
+        background: #164a7f;
+        box-shadow: 0 0 8px rgba(22, 74, 127, 0.5);
+    }
+    .progress-dot.completed {
+        background: #4caf50;
+    }
+    </style>
+    """, unsafe_allow_html=True)
     
-    Now that you've selected your program, work through the following design considerations:
-    """)
+    # Show progress dots
+    progress_html = '<div class="progress-dots">'
+    for i in range(len(WORKBOOK_STEPS)):
+        if i < current:
+            progress_html += '<div class="progress-dot completed"></div>'
+        elif i == current:
+            progress_html += '<div class="progress-dot active"></div>'
+        else:
+            progress_html += '<div class="progress-dot"></div>'
+    progress_html += '</div>'
+    st.markdown(progress_html, unsafe_allow_html=True)
     
-    # Design steps checklist
-    steps = [
-        ("1. Frame the Challenge", "Define your research question and key outcomes"),
-        ("2. Map Theory of Change", "Connect activities to expected outcomes"),
-        ("3. Design Measurement", "Select indicators and data collection methods"),
-        ("4. Plan Randomization", "Choose randomization approach and unit"),
-        ("5. Safeguard Implementation", "Identify risks and mitigation strategies"),
-        ("6. Decide and Commit", "Define success criteria and decision triggers")
-    ]
+    # Get current step data
+    step = WORKBOOK_STEPS[current]
     
-    for step_title, step_desc in steps:
-        with st.expander(f"**{step_title}**"):
-            st.markdown(f"_{step_desc}_")
-            st.text_area(f"Notes for {step_title}", key=f"notes_{step_title}", height=100)
+    # Step header
+    st.markdown(f"""
+    <div class="step-header">
+        <div class="step-number">Step {step['number']} of {len(WORKBOOK_STEPS)}</div>
+        <div class="step-title">{step['title']}</div>
+        <div class="step-goal">{step['goal']}</div>
+    </div>
+    """, unsafe_allow_html=True)
     
-    st.markdown("---")
-    st.success("✅ Once you've worked through the design steps, proceed to randomization!")
-    
-    col1, col2, col3 = st.columns(3)
+    # Two column layout
+    col1, col2 = st.columns([1, 1.2])
     
     with col1:
-        if st.button("← Back to Welcome", use_container_width=True):
-            st.session_state.current_step = 1
-            st.rerun()
+        # Actions section
+        st.markdown('<div class="actions-box">', unsafe_allow_html=True)
+        st.markdown("**Actions:**")
+        for action in step['actions']:
+            st.markdown(f"• {action}")
+        st.markdown('</div>', unsafe_allow_html=True)
+        
+        # Tip
+        st.markdown(f'<div class="tip-box"><strong>💡 Tip:</strong> {step["tip"]}</div>', unsafe_allow_html=True)
+    
+    with col2:
+        # Note fields
+        st.markdown("**Notes:**")
+        for field in step['fields']:
+            field_key = f"step{step['number']}_{field['key']}"
+            value = ""
+            
+            if field['type'] == 'text':
+                value = st.text_input(
+                    field['label'],
+                    value=st.session_state.workbook_responses.get(field_key, ''),
+                    key=field_key,
+                    label_visibility="visible"
+                )
+            elif field['type'] == 'textarea':
+                rows = field.get('rows', 3)
+                value = st.text_area(
+                    field['label'],
+                    value=st.session_state.workbook_responses.get(field_key, ''),
+                    key=field_key,
+                    height=rows * 35,
+                    label_visibility="visible"
+                )
+            
+            st.session_state.workbook_responses[field_key] = value
+    
+    # Navigation
+    st.markdown("---")
+    col1, col2, col3 = st.columns([1, 1, 1])
+    
+    with col1:
+        if current > 0:
+            if st.button("← Previous Step", use_container_width=True):
+                st.session_state.workbook_step -= 1
+                st.rerun()
+        else:
+            if st.button("← Back to Welcome", use_container_width=True):
+                st.session_state.current_step = 1
+                st.rerun()
     
     with col2:
         if st.button("📄 View Program Card", use_container_width=True):
@@ -271,8 +388,14 @@ def render_design_workbook():
             st.rerun()
     
     with col3:
-        if st.button("Next: Randomization →", type="primary", use_container_width=True):
-            st.switch_page("pages/randomization.py")
+        if current < len(WORKBOOK_STEPS) - 1:
+            if st.button("Next Step →", type="primary", use_container_width=True):
+                st.session_state.workbook_step += 1
+                st.rerun()
+        else:
+            if st.button("Complete & Randomize →", type="primary", use_container_width=True):
+                st.success("✅ Workbook completed! Proceeding to randomization...")
+                st.switch_page("pages/randomization.py")
 
 
 def render_program_card_display():

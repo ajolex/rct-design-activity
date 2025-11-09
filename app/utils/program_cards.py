@@ -3,9 +3,13 @@ Utilities for loading and managing program cards.
 """
 
 import json
+import sys
 from pathlib import Path
 from typing import Dict, Optional
-from app.config import PROGRAM_CARDS
+
+# Add parent directory to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent))
+from config import PROGRAM_CARDS
 
 
 def get_all_program_cards() -> Dict[str, Dict]:

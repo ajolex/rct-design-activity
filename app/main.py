@@ -8,12 +8,18 @@ decision triggers, using realistic program cards and sample data.
 
 import streamlit as st
 from datetime import datetime
+import sys
+from pathlib import Path
+import pandas as pd
 
-from app.config import (
+# Add parent directory to path for imports
+sys.path.insert(0, str(Path(__file__).parent))
+
+from config import (
     APP_TITLE, APP_SUBTITLE, APP_DESCRIPTION, CUSTOM_CSS,
     DEFAULT_SESSION_STATE, PARTICIPANT_GUIDANCE, SPRINT_CHECKLIST
 )
-from app.utils.program_cards import get_all_program_cards, get_program_card, format_card_for_display
+from utils.program_cards import get_all_program_cards, get_program_card, format_card_for_display
 
 # ===== PAGE CONFIG =====
 st.set_page_config(
@@ -210,7 +216,7 @@ def main():
         col1, col2 = st.columns(2)
         with col1:
             if st.button("▶️ Start Design Sprint", use_container_width=True, key="start_sprint"):
-                st.session_state.current_step = 1
+                st.session_state.current_step = 2
                 st.rerun()
         
         with col2:
@@ -219,25 +225,54 @@ def main():
                 st.rerun()
     
     else:
-        # Show navigation instructions
-        st.markdown("---")
-        st.info(f"💡 **Tip:** Use the **Pages** menu (left sidebar) to navigate through the 6 design steps. "
-                f"You're currently on Step {current_step}.")
-        
-        st.markdown("""
-        ### Next Steps:
-        
-        Use the **Pages** navigation in the sidebar to:
-        1. Go through each design step (1-6)
-        2. Fill in your team's responses
-        3. Generate a report when done
-        
-        The app will guide you through each step with:
-        - **Clear goals** for what to achieve
-        - **Guided prompts** for your team to discuss
-        - **Tip boxes** with facilitation guidance
-        - **Note spaces** to capture decisions
-        """)
+        # Show design workbook steps
+        render_design_workbook()
+
+
+def render_design_workbook():
+    """Render the design workbook steps interface."""
+    st.markdown("---")
+    st.header("📝 RCT Design Workbook")
+    
+    st.markdown("""
+    ### Work Through the Design Steps
+    
+    Now that you've selected your program, work through the following design considerations:
+    """)
+    
+    # Design steps checklist
+    steps = [
+        ("1. Frame the Challenge", "Define your research question and key outcomes"),
+        ("2. Map Theory of Change", "Connect activities to expected outcomes"),
+        ("3. Design Measurement", "Select indicators and data collection methods"),
+        ("4. Plan Randomization", "Choose randomization approach and unit"),
+        ("5. Safeguard Implementation", "Identify risks and mitigation strategies"),
+        ("6. Decide and Commit", "Define success criteria and decision triggers")
+    ]
+    
+    for step_title, step_desc in steps:
+        with st.expander(f"**{step_title}**"):
+            st.markdown(f"_{step_desc}_")
+            st.text_area(f"Notes for {step_title}", key=f"notes_{step_title}", height=100)
+    
+    st.markdown("---")
+    st.success("✅ Once you've worked through the design steps, proceed to randomization!")
+    
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        if st.button("← Back to Welcome", use_container_width=True):
+            st.session_state.current_step = 1
+            st.rerun()
+    
+    with col2:
+        if st.button("📄 View Program Card", use_container_width=True):
+            st.session_state.current_step = 0
+            st.rerun()
+    
+    with col3:
+        if st.button("Next: Randomization →", type="primary", use_container_width=True):
+            st.switch_page("pages/randomization.py")
 
 
 def render_program_card_display():
@@ -312,6 +347,54 @@ def render_program_card_display():
     # Considerations
     st.subheader("⚠️ Design Considerations")
     st.warning(formatted['considerations'])
+    
+    st.divider()
+    
+    # Baseline Data Download
+    st.subheader("📊 Baseline Data for Randomization")
+    
+    # Map program card to data file
+    data_file_map = {
+        "education_bridge_to_basics": "data/sample_data/education_bridge_to_basics.csv",
+        "health_community_care_loop": "data/sample_data/health_community_care_loop.csv",
+        "agriculture_smart_water_boost": "data/sample_data/agriculture_smart_water_boost.csv"
+    }
+    
+    if card_id in data_file_map:
+        data_path = Path(data_file_map[card_id])
+        
+        if data_path.exists():
+            import pandas as pd
+            df = pd.read_csv(data_path)
+            
+            col1, col2 = st.columns([2, 1])
+            
+            with col1:
+                st.info(f"""
+                **Sample Data Available:**
+                - {len(df):,} records
+                - {df.shape[1]} variables
+                - Ready for randomization practice
+                
+                Download this baseline data to use with the RCT Field Flow randomization tool.
+                """)
+            
+            with col2:
+                # Download button
+                csv_data = df.to_csv(index=False)
+                st.download_button(
+                    label="📥 Download Baseline Data",
+                    data=csv_data,
+                    file_name=data_path.name,
+                    mime="text/csv",
+                    use_container_width=True
+                )
+            
+            # Preview
+            with st.expander("👁️ Preview Data (first 10 rows)"):
+                st.dataframe(df.head(10), use_container_width=True)
+        else:
+            st.warning(f"Sample data file not found: {data_path}")
     
     st.divider()
     

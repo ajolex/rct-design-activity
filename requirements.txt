@@ -12,7 +12,7 @@ weasyprint>=59.0  # For PDF export (requires additional system deps)
 python-docx>=0.8.11  # For DOCX export
 
 # Data handling and visualization
-openpyxl>=3.10.0  # Excel support for reports
+openpyxl>=3.1.0  # Excel support for reports
 plotly>=5.14.0  # Optional: for charts in reports
 
 # Testing

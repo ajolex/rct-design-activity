@@ -133,6 +133,19 @@ def render_sidebar():
             seconds = int(elapsed.total_seconds() % 60)
             st.caption(f"⏱️ Elapsed: {minutes}m {seconds}s")
         
+        st.divider()
+        
+        # Developer watermark
+        st.markdown("""
+        <div style='text-align: center; color: #888; font-size: 0.75rem; padding: 1rem 0;'>
+            <p style='margin-bottom: 0.3rem;'><strong>Developed by</strong></p>
+            <p style='margin-bottom: 0.3rem;'>Aubrey Jolex</p>
+            <p style='margin: 0;'>
+                📧 <a href='mailto:aubreyjolex@gmail.com' style='color: #2fa6dc; text-decoration: none;'>aubreyjolex@gmail.com</a>
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+        
         return True
 
 
@@ -227,6 +240,9 @@ def main():
     else:
         # Show design workbook steps
         render_design_workbook()
+    
+    # Render footer on all pages
+    render_footer()
 
 
 def render_design_workbook():
@@ -534,6 +550,19 @@ def render_program_card_display():
         if st.button("← Back to Welcome", use_container_width=True):
             st.session_state.current_step = 1
             st.rerun()
+
+
+def render_footer():
+    """Render footer with developer watermark."""
+    st.markdown("---")
+    st.markdown("""
+    <div style='text-align: center; color: #666; font-size: 0.85rem; padding: 2rem 0 1rem 0;'>
+        <p style='margin-bottom: 0.5rem;'>Developed by <strong>Aubrey Jolex</strong></p>
+        <p style='margin: 0;'>
+            📧 <a href='mailto:aubreyjolex@gmail.com' style='color: #2fa6dc; text-decoration: none;'>aubreyjolex@gmail.com</a>
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
 
 
 if __name__ == "__main__":

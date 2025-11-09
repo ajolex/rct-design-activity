@@ -1,0 +1,213 @@
+farmer_id,coop_id,coop_name,farm_size_acres,baseline_irrigation_method,baseline_farm_income_usd,water_source_type,distance_to_market_km
+3001,1,Coop_01,2.44,None,471.26,River,0.3
+3002,1,Coop_01,2.63,Manual,826.21,Borehole,0.29
+3003,1,Coop_01,2.24,Partial Drip,871.43,Well,1.72
+3004,1,Coop_01,1.93,None,909.37,Rain,1.32
+3005,1,Coop_01,0.5,Manual,371.49,Well,4.68
+3006,1,Coop_01,0.72,None,324.47,Rain,4.14
+3007,1,Coop_01,1.31,None,174.92,Rain,3.42
+3008,1,Coop_01,0.34,Partial Drip,170.04,Rain,7.04
+3009,1,Coop_01,1.42,None,227.82,Rain,14.03
+3010,1,Coop_01,2.71,Manual,350.84,Rain,4.23
+3011,1,Coop_01,1.68,Drip,471.05,Rain,2.21
+3012,1,Coop_01,1.02,Manual,534.15,River,0.9
+3013,1,Coop_01,0.29,None,70.72,River,6.14
+3014,1,Coop_01,2.25,Partial Drip,167.21,River,5.26
+3015,1,Coop_01,2.77,Partial Drip,151.33,Borehole,1.97
+3016,1,Coop_01,2.26,Manual,305.25,Well,2.41
+3017,1,Coop_01,2.92,Partial Drip,145.69,River,3.7
+3018,1,Coop_01,1.43,None,579.58,River,11.31
+3019,1,Coop_01,1.56,Manual,169.44,River,7.04
+3020,2,Coop_02,2.84,Manual,455.21,Rain,13.27
+3021,2,Coop_02,2.47,Manual,404.23,Borehole,10.74
+3022,2,Coop_02,1.14,None,421.31,Borehole,0.58
+3023,2,Coop_02,0.88,None,415.79,Rain,3.82
+3024,2,Coop_02,1.58,Manual,405.38,Rain,14.32
+3025,2,Coop_02,1.14,Manual,144.32,Rain,1.42
+3026,2,Coop_02,2.16,Manual,843.12,Rain,0.19
+3027,2,Coop_02,1.93,Manual,286.09,Rain,2.97
+3028,2,Coop_02,1.77,Manual,417.41,Rain,1.36
+3029,2,Coop_02,2.25,None,843.72,Rain,8.01
+3030,2,Coop_02,0.66,Manual,837.56,River,4.47
+3031,2,Coop_02,2.11,None,71.86,Rain,14.11
+3032,2,Coop_02,1.34,Manual,351.35,River,2.09
+3033,2,Coop_02,0.56,Partial Drip,249.45,Borehole,20.13
+3034,2,Coop_02,1.67,None,498.53,Borehole,11.38
+3035,2,Coop_02,2.73,Manual,105.1,River,9.7
+3036,3,Coop_03,2.39,Manual,95.42,Rain,7.69
+3037,3,Coop_03,2.09,Manual,502.17,Borehole,0.88
+3038,3,Coop_03,1.76,Manual,292.64,Well,0.97
+3039,3,Coop_03,0.3,Manual,227.6,River,5.36
+3040,3,Coop_03,1.81,None,120.7,River,1.44
+3041,3,Coop_03,1.87,Drip,628.03,Well,3.49
+3042,3,Coop_03,1.84,Manual,325.72,Well,3.46
+3043,3,Coop_03,1.82,Partial Drip,52.36,Rain,0.08
+3044,3,Coop_03,2.8,None,274.41,River,19.64
+3045,3,Coop_03,0.46,None,199.45,Borehole,4.07
+3046,3,Coop_03,2.82,Manual,164.31,Rain,1.17
+3047,3,Coop_03,2.1,None,157.68,Rain,5.97
+3048,3,Coop_03,2.18,None,132.25,River,2.72
+3049,3,Coop_03,0.95,Manual,111.65,Borehole,7.94
+3050,3,Coop_03,2.7,None,478.17,Borehole,2.89
+3051,3,Coop_03,2.1,None,373.54,Borehole,8.65
+3052,3,Coop_03,1.24,None,371.06,Well,1.58
+3053,3,Coop_03,2.9,Manual,242.14,River,5.07
+3054,4,Coop_04,0.62,Drip,459.7,River,7.93
+3055,4,Coop_04,0.99,None,171.13,Well,2.92
+3056,4,Coop_04,0.91,None,972.58,Well,1.64
+3057,4,Coop_04,2.88,Manual,1236.35,Rain,4.17
+3058,4,Coop_04,0.69,None,677.3,Rain,0.24
+3059,4,Coop_04,0.36,Partial Drip,275.72,Rain,8.22
+3060,4,Coop_04,1.2,Manual,1087.95,Borehole,4.78
+3061,4,Coop_04,2.0,None,861.13,Well,3.88
+3062,4,Coop_04,2.13,Manual,83.06,Borehole,0.13
+3063,4,Coop_04,1.86,Partial Drip,44.24,Well,8.34
+3064,4,Coop_04,2.51,Manual,785.33,Rain,11.79
+3065,4,Coop_04,0.79,None,411.28,Rain,2.43
+3066,4,Coop_04,2.12,None,197.02,River,0.63
+3067,4,Coop_04,2.17,Manual,435.81,Well,3.97
+3068,4,Coop_04,1.41,Manual,507.08,River,2.66
+3069,4,Coop_04,1.27,Partial Drip,495.49,Well,5.69
+3070,5,Coop_05,2.32,None,283.81,Borehole,3.43
+3071,5,Coop_05,1.32,None,445.15,Rain,4.26
+3072,5,Coop_05,1.99,None,302.2,Well,4.03
+3073,5,Coop_05,0.84,Partial Drip,252.47,Borehole,0.3
+3074,5,Coop_05,1.76,None,401.94,River,6.12
+3075,5,Coop_05,2.91,Manual,357.14,Borehole,6.04
+3076,5,Coop_05,0.45,Partial Drip,355.15,Well,3.6
+3077,5,Coop_05,0.89,Manual,413.92,Rain,2.36
+3078,5,Coop_05,0.48,Partial Drip,287.29,River,1.43
+3079,5,Coop_05,1.16,None,205.97,Rain,0.63
+3080,5,Coop_05,0.57,Manual,77.45,Well,1.36
+3081,5,Coop_05,1.35,Manual,348.38,Borehole,0.06
+3082,5,Coop_05,2.92,None,159.44,Borehole,12.93
+3083,5,Coop_05,2.78,None,225.73,Well,5.95
+3084,5,Coop_05,1.5,Manual,392.62,Rain,6.68
+3085,5,Coop_05,2.77,Drip,297.69,Well,1.62
+3086,5,Coop_05,0.77,Manual,201.06,Borehole,1.55
+3087,5,Coop_05,1.24,None,221.18,Well,8.4
+3088,5,Coop_05,2.13,None,320.72,Well,14.11
+3089,6,Coop_06,2.25,Manual,548.79,Well,0.9
+3090,6,Coop_06,1.38,Partial Drip,300.33,River,0.82
+3091,6,Coop_06,1.88,None,304.63,Well,0.07
+3092,6,Coop_06,0.46,Manual,765.96,Well,28.47
+3093,6,Coop_06,1.78,Partial Drip,258.87,River,1.61
+3094,6,Coop_06,0.82,Partial Drip,67.46,Borehole,2.22
+3095,6,Coop_06,0.56,Manual,915.66,Rain,8.47
+3096,6,Coop_06,2.91,None,364.1,Well,0.72
+3097,6,Coop_06,0.33,Partial Drip,884.56,Borehole,4.8
+3098,6,Coop_06,2.95,Manual,615.24,River,2.88
+3099,6,Coop_06,2.74,None,891.17,River,3.71
+3100,6,Coop_06,2.17,Partial Drip,352.83,Well,3.39
+3101,6,Coop_06,0.96,Manual,331.74,River,4.33
+3102,6,Coop_06,1.19,Manual,448.63,Rain,0.82
+3103,6,Coop_06,0.63,Manual,217.48,River,3.62
+3104,7,Coop_07,1.91,None,127.82,Borehole,1.63
+3105,7,Coop_07,0.74,None,306.45,Borehole,0.69
+3106,7,Coop_07,1.16,None,131.12,River,4.94
+3107,7,Coop_07,0.47,Partial Drip,605.01,Well,21.44
+3108,7,Coop_07,1.73,Partial Drip,197.44,Rain,2.3
+3109,7,Coop_07,1.52,Manual,505.46,River,0.15
+3110,7,Coop_07,2.63,None,420.33,Rain,1.57
+3111,7,Coop_07,1.29,None,127.54,Rain,1.33
+3112,7,Coop_07,1.19,Manual,191.31,Well,3.45
+3113,7,Coop_07,0.49,Manual,901.54,River,2.38
+3114,7,Coop_07,1.18,Partial Drip,492.74,River,2.2
+3115,7,Coop_07,2.96,Manual,248.45,River,3.35
+3116,7,Coop_07,2.59,None,275.47,Rain,11.35
+3117,7,Coop_07,0.47,Manual,408.15,Borehole,4.29
+3118,8,Coop_08,2.63,Partial Drip,320.53,Rain,6.42
+3119,8,Coop_08,2.51,Manual,55.2,Well,1.04
+3120,8,Coop_08,1.14,None,1568.24,Well,3.77
+3121,8,Coop_08,2.19,Partial Drip,336.69,Well,3.8
+3122,8,Coop_08,0.39,None,154.5,River,3.98
+3123,8,Coop_08,0.8,Manual,1409.48,River,13.26
+3124,8,Coop_08,2.53,Drip,200.36,Rain,23.51
+3125,8,Coop_08,0.81,None,383.0,Well,0.75
+3126,8,Coop_08,2.44,None,433.09,Well,1.03
+3127,8,Coop_08,0.9,Manual,267.46,Borehole,8.48
+3128,8,Coop_08,1.46,None,516.29,Borehole,3.88
+3129,8,Coop_08,1.46,Manual,108.29,Well,11.85
+3130,8,Coop_08,1.97,None,66.19,River,6.56
+3131,8,Coop_08,2.16,None,330.05,River,7.77
+3132,8,Coop_08,0.67,None,686.42,River,0.77
+3133,8,Coop_08,0.81,Manual,962.49,Well,0.59
+3134,8,Coop_08,2.58,None,323.41,Well,3.88
+3135,8,Coop_08,1.59,None,808.37,River,2.12
+3136,8,Coop_08,0.75,Partial Drip,1161.89,Rain,2.75
+3137,8,Coop_08,1.04,Manual,268.63,River,13.45
+3138,8,Coop_08,1.8,Manual,232.17,Rain,5.27
+3139,8,Coop_08,2.37,None,196.16,River,12.68
+3140,8,Coop_08,2.64,Manual,221.09,Well,2.38
+3141,9,Coop_09,1.17,Partial Drip,605.36,Borehole,3.13
+3142,9,Coop_09,1.57,Partial Drip,21.46,River,3.01
+3143,9,Coop_09,0.64,None,319.51,River,1.63
+3144,9,Coop_09,0.86,None,462.07,Rain,2.68
+3145,9,Coop_09,0.48,Drip,337.02,Well,1.85
+3146,9,Coop_09,1.34,None,207.29,Well,0.19
+3147,9,Coop_09,1.55,Manual,718.03,Borehole,6.26
+3148,9,Coop_09,1.7,Manual,207.93,Rain,1.0
+3149,9,Coop_09,2.62,Partial Drip,598.07,River,19.3
+3150,9,Coop_09,2.56,Partial Drip,94.74,Well,1.25
+3151,9,Coop_09,0.89,Manual,215.42,River,6.38
+3152,9,Coop_09,2.46,Drip,476.33,Borehole,8.87
+3153,9,Coop_09,1.34,Manual,190.8,River,5.02
+3154,9,Coop_09,2.27,Partial Drip,145.16,River,4.37
+3155,9,Coop_09,1.41,Partial Drip,215.76,Borehole,2.26
+3156,9,Coop_09,0.34,Partial Drip,684.17,Rain,4.02
+3157,9,Coop_09,1.45,None,652.49,Well,3.32
+3158,10,Coop_10,0.99,Manual,325.4,River,1.23
+3159,10,Coop_10,2.02,None,706.94,Rain,0.63
+3160,10,Coop_10,1.84,None,727.77,Well,3.44
+3161,10,Coop_10,2.23,None,235.36,River,4.55
+3162,10,Coop_10,1.9,Manual,192.77,Well,9.1
+3163,10,Coop_10,1.36,Partial Drip,137.55,Well,4.62
+3164,10,Coop_10,0.92,None,147.26,River,4.71
+3165,10,Coop_10,2.86,None,91.96,Borehole,6.59
+3166,10,Coop_10,0.84,None,516.1,Borehole,15.53
+3167,10,Coop_10,0.68,Manual,74.83,Well,0.39
+3168,10,Coop_10,2.25,Manual,196.24,River,0.4
+3169,10,Coop_10,0.26,Drip,1054.47,Rain,2.24
+3170,10,Coop_10,0.5,Partial Drip,95.55,Rain,7.1
+3171,11,Coop_11,2.34,Manual,278.26,Rain,1.44
+3172,11,Coop_11,1.6,None,592.47,Well,6.57
+3173,11,Coop_11,0.78,None,369.1,Well,3.21
+3174,11,Coop_11,2.62,Partial Drip,639.03,River,2.27
+3175,11,Coop_11,1.79,Manual,217.06,River,2.08
+3176,11,Coop_11,2.24,None,451.61,Well,6.69
+3177,11,Coop_11,1.68,None,42.11,Borehole,0.12
+3178,11,Coop_11,2.64,None,355.03,River,0.36
+3179,11,Coop_11,0.28,None,691.06,Borehole,3.27
+3180,11,Coop_11,1.98,Partial Drip,60.36,Borehole,0.02
+3181,11,Coop_11,1.54,None,54.24,Borehole,1.33
+3182,11,Coop_11,0.37,None,324.46,Rain,0.66
+3183,11,Coop_11,2.88,Partial Drip,397.54,Rain,2.7
+3184,11,Coop_11,2.67,Partial Drip,1356.06,Rain,0.34
+3185,11,Coop_11,1.35,Partial Drip,189.62,River,3.59
+3186,11,Coop_11,0.88,None,196.94,Borehole,8.07
+3187,11,Coop_11,1.98,None,209.5,Rain,26.4
+3188,12,Coop_12,0.97,Manual,379.08,River,1.27
+3189,12,Coop_12,0.87,Manual,332.56,Borehole,9.84
+3190,12,Coop_12,1.51,None,288.75,Borehole,9.91
+3191,12,Coop_12,2.48,Manual,53.99,River,1.65
+3192,12,Coop_12,0.94,None,276.16,Well,1.24
+3193,12,Coop_12,2.13,None,360.4,Rain,10.72
+3194,12,Coop_12,1.67,Partial Drip,1083.98,Well,1.55
+3195,12,Coop_12,2.67,Partial Drip,593.23,Well,0.86
+3196,12,Coop_12,0.69,None,422.31,Well,10.64
+3197,12,Coop_12,2.65,None,195.78,Borehole,8.57
+3198,12,Coop_12,0.88,Partial Drip,164.76,Well,4.8
+3199,12,Coop_12,2.95,Manual,609.21,Rain,0.05
+3200,12,Coop_12,2.5,None,743.07,River,13.44
+3201,12,Coop_12,0.53,Partial Drip,275.96,Borehole,14.72
+3202,12,Coop_12,0.71,Partial Drip,276.49,Rain,0.23
+3203,12,Coop_12,2.65,Drip,208.84,River,0.34
+3204,12,Coop_12,2.51,None,440.52,River,5.75
+3205,12,Coop_12,1.48,None,105.95,Well,1.77
+3206,12,Coop_12,2.56,Partial Drip,289.51,River,1.6
+3207,12,Coop_12,2.86,None,530.98,River,16.69
+3208,12,Coop_12,2.34,None,308.38,Borehole,11.23
+3209,12,Coop_12,0.88,None,352.86,River,3.19
+3210,12,Coop_12,1.74,None,277.54,Well,7.49
+3211,12,Coop_12,2.37,Partial Drip,528.35,Well,12.14
+3212,12,Coop_12,2.91,None,807.77,Borehole,0.62

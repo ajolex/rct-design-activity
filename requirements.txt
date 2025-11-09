@@ -1,0 +1,32 @@
+# RCT Design Activity Streamlit App - Requirements
+
+# Core dependencies
+streamlit>=1.28.0
+pandas>=1.5.0
+numpy>=1.23.0
+pydantic>=2.0.0
+
+# Report generation
+jinja2>=3.1.0
+weasyprint>=59.0  # For PDF export (requires additional system deps)
+python-docx>=0.8.11  # For DOCX export
+
+# Data handling and visualization
+openpyxl>=3.10.0  # Excel support for reports
+plotly>=5.14.0  # Optional: for charts in reports
+
+# Testing
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-mock>=3.11.0
+
+# Development and deployment
+python-dotenv>=1.0.0  # Environment variables
+gunicorn>=21.0.0  # For production deployment
+streamlit-authenticator>=0.2.3  # Optional: for authentication
+
+# Code quality (development only, marked below)
+# pylint>=2.17.0
+# black>=23.0.0
+# flake8>=6.0.0
+# isort>=5.12.0

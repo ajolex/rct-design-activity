@@ -118,9 +118,9 @@ WORKBOOK_STEPS = [
         "tip": "Keep your problem statement specific to one population and one outcome.",
         "fields": [
             {"key": "program_title", "label": "Program title", "type": "text"},
-            {"key": "target_group", "label": "Target group", "type": "text"},
+            {"key": "target_group", "label": "Target group", "type": "text", "placeholder": "e.g. Grade 4 students struggling with reading"},
             {"key": "delivery_setting", "label": "Delivery setting", "type": "text", "placeholder": "e.g. Facilitators lead biweekly sessions with female participants in school classrooms"},
-            {"key": "success_statement", "label": "Success in 12 months looks like", "type": "textarea", "rows": 3},
+            {"key": "success_statement", "label": "Success in 12 months looks like", "type": "textarea", "rows": 3, "placeholder": "e.g. 70% of participants move from below-grade-level to grade-level reading"},
         ],
     },
     {
@@ -134,8 +134,8 @@ WORKBOOK_STEPS = [
         ],
         "tip": "If you cannot draw a tight line from activity to outcome, consider narrowing scope.",
         "fields": [
-            {"key": "riskiest_assumption", "label": "Riskiest assumption", "type": "textarea", "rows": 3},
-            {"key": "early_signal", "label": "Early signal to watch", "type": "textarea", "rows": 3},
+            {"key": "riskiest_assumption", "label": "Riskiest assumption", "type": "textarea", "rows": 3, "placeholder": "e.g. We assume participants will attend 80% of sessions, but attendance could drop if sessions conflict with harvest season"},
+            {"key": "early_signal", "label": "Early signal to watch", "type": "textarea", "rows": 3, "placeholder": "e.g. Within 2 months, 60% of participants should complete baseline assessments, showing engagement and buy-in"},
         ],
     },
     {
@@ -149,10 +149,10 @@ WORKBOOK_STEPS = [
         ],
         "tip": "If an indicator feels fuzzy, add a quick definition or example in the notes.",
         "fields": [
-            {"key": "primary_outcome_definition", "label": "Primary outcome definition", "type": "textarea", "rows": 3},
-            {"key": "instruments", "label": "Instrument(s)", "type": "textarea", "rows": 3},
-            {"key": "baseline_timing", "label": "Baseline timing", "type": "text"},
-            {"key": "followup_timing", "label": "Follow-up timing", "type": "text"},
+            {"key": "primary_outcome_definition", "label": "Primary outcome definition", "type": "textarea", "rows": 3, "placeholder": "e.g. Students' reading proficiency measured by fluency assessment (words read correctly per minute); a score of 90+ WPM = grade level competency"},
+            {"key": "instruments", "label": "Instrument(s)", "type": "textarea", "rows": 3, "placeholder": "e.g. Timed reading fluency test (1 min), comprehension quiz, classroom observations by trained assessors"},
+            {"key": "baseline_timing", "label": "Baseline timing", "type": "text", "placeholder": "e.g. First 2 weeks of school year, before intervention starts"},
+            {"key": "followup_timing", "label": "Follow-up timing", "type": "text", "placeholder": "e.g. End of school year (12 months), and mid-year check-in at 6 months"},
         ],
     },
     {
@@ -166,10 +166,10 @@ WORKBOOK_STEPS = [
         ],
         "tip": "If spillovers feel unavoidable, consider cluster-level assignment.",
         "fields": [
-            {"key": "randomization_unit", "label": "Randomization unit", "type": "text"},
-            {"key": "randomization_method", "label": "Method", "type": "text"},
-            {"key": "assignment_steps", "label": "Assignment steps and checks", "type": "textarea", "rows": 3},
-            {"key": "spillover_mitigation", "label": "Spillover mitigation", "type": "textarea", "rows": 3},
+            {"key": "randomization_unit", "label": "Randomization unit", "type": "text", "placeholder": "e.g. Individual students, School, Village, or Clinic"},
+            {"key": "randomization_method", "label": "Method", "type": "text", "placeholder": "e.g. Simple random assignment (50/50 treatment/control), Stratified by gender, or Cluster-randomized by school"},
+            {"key": "assignment_steps", "label": "Assignment steps and checks", "type": "textarea", "rows": 3, "placeholder": "e.g. 1) List all 320 eligible students, 2) Use RCT Field Flow tool to randomize, 3) School director seals envelope assignments, 4) Public announcement of groups"},
+            {"key": "spillover_mitigation", "label": "Spillover mitigation", "type": "textarea", "rows": 3, "placeholder": "e.g. School-level randomization avoids students talking across groups; separate classrooms for treatment; clear communication that control group receives intervention later"},
         ],
     },
     {
@@ -183,8 +183,8 @@ WORKBOOK_STEPS = [
         ],
         "tip": "Assign a lead person to each risk so follow-up happens quickly.",
         "fields": [
-            {"key": "team_checkins", "label": "Team check-ins", "type": "textarea", "rows": 3},
-            {"key": "risks_to_watch", "label": "Risks to watch", "type": "textarea", "rows": 3},
+            {"key": "team_checkins", "label": "Team check-ins", "type": "textarea", "rows": 3, "placeholder": "e.g. Weekly meetings with implementers to review attendance, materials availability, and any challenges; monthly data quality audits"},
+            {"key": "risks_to_watch", "label": "Risks to watch", "type": "textarea", "rows": 3, "placeholder": "e.g. Low attendance (trigger: >20% absence), staff turnover, equipment breakdown, participant dropout, changes in school policy"},
         ],
     },
     {
@@ -198,9 +198,9 @@ WORKBOOK_STEPS = [
         ],
         "tip": "Be concrete: threshold, time frame, and decision owner.",
         "fields": [
-            {"key": "decision_trigger", "label": "Decision trigger", "type": "textarea", "rows": 3},
-            {"key": "stakeholders_to_brief", "label": "Stakeholders to brief", "type": "textarea", "rows": 3},
-            {"key": "next_steps", "label": "Next steps after briefing", "type": "textarea", "rows": 3},
+            {"key": "decision_trigger", "label": "Decision trigger", "type": "textarea", "rows": 3, "placeholder": "e.g. If treatment group shows ≥25% improvement in reading scores vs. control group AND fidelity is ≥80%, proceed with scale-up by June 2025"},
+            {"key": "stakeholders_to_brief", "label": "Stakeholders to brief", "type": "textarea", "rows": 3, "placeholder": "e.g. School board, district education office, implementing partner NGO, donor (Ministry of Education)"},
+            {"key": "next_steps", "label": "Next steps after briefing", "type": "textarea", "rows": 3, "placeholder": "e.g. If positive: submit scale-up proposal, train 20 new facilitators, apply for expansion budget; if null/negative: conduct qualitative analysis to understand barriers"},
         ],
     },
 ]

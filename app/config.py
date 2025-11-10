@@ -1,6 +1,12 @@
 # Configuration and constants for the RCT Design Activity app
 
 import os
+from pathlib import Path
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+env_path = Path(__file__).parent.parent / '.env'
+load_dotenv(dotenv_path=env_path)
 
 # ===== APP METADATA =====
 APP_TITLE = "Design an RCT: Interactive Workshop Activity"

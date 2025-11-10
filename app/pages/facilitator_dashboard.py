@@ -40,7 +40,7 @@ def check_password():
             key="password",
             help="Enter the facilitator dashboard password to access this page"
         )
-        st.info("💡 **Default password:** `changeme` (Set via ADMIN_PASSWORD environment variable)")
+        st.info("💡 **Password:**Set by ADMIN**")
         return False
     elif not st.session_state["password_correct"]:
         # Password incorrect, show input + error
@@ -195,7 +195,7 @@ def main():
     # Footer
     st.markdown("""
     <div style='text-align: center; color: #888; font-size: 0.85rem; padding: 1rem 0;'>
-        <p>👨‍🏫 Facilitator Dashboard • Access with ADMIN_PASSWORD environment variable</p>
+        <p>👨‍🏫 Facilitator Dashboard • Access with ADMIN PASSWORD</p>
     </div>
     """, unsafe_allow_html=True)
 

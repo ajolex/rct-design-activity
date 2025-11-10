@@ -40,7 +40,7 @@ def check_password():
             key="password",
             help="Enter the facilitator dashboard password to access this page"
         )
-        st.info("💡 **Password:**Set by ADMIN**")
+        st.info("💡 **Password:** Set by ADMIN")
         return False
     elif not st.session_state["password_correct"]:
         # Password incorrect, show input + error

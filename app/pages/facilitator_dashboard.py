@@ -7,6 +7,7 @@ import streamlit as st
 import sys
 from pathlib import Path
 from datetime import datetime
+import json
 
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -19,6 +20,58 @@ st.set_page_config(
     page_icon="👨‍🏫",
     layout="wide",
 )
+
+
+def get_team_progress_file():
+    """Get the path to the team progress tracking file."""
+    return Path(__file__).parent.parent.parent / "data" / "team_progress.json"
+
+
+def load_team_progress():
+    """Load team progress data from file."""
+    progress_file = get_team_progress_file()
+    if progress_file.exists():
+        try:
+            with open(progress_file, "r") as f:
+                return json.load(f)
+        except (json.JSONDecodeError, IOError):
+            return {}
+    return {}
+
+
+def get_teams_summary():
+    """Get summary of team progress."""
+    team_data = load_team_progress()
+    
+    if not team_data:
+        return {
+            "total_teams": 0,
+            "teams_started": 0,
+            "teams_completed": 0,
+            "teams": []
+        }
+    
+    teams_started = sum(1 for team in team_data.values() if team.get("started"))
+    teams_completed = sum(1 for team in team_data.values() if team.get("completed"))
+    
+    teams_list = []
+    for team_name, data in team_data.items():
+        teams_list.append({
+            "name": team_name,
+            "program": data.get("program_card", "Not selected"),
+            "started": data.get("started"),
+            "started_at": data.get("started_at"),
+            "current_step": data.get("current_step", 1),
+            "completed": data.get("completed"),
+            "completed_at": data.get("completed_at")
+        })
+    
+    return {
+        "total_teams": len(team_data),
+        "teams_started": teams_started,
+        "teams_completed": teams_completed,
+        "teams": sorted(teams_list, key=lambda x: x["started_at"] or "", reverse=True)
+    }
 
 def check_password():
     """Returns True if the user has entered the correct password."""
@@ -75,36 +128,80 @@ def main():
     
     st.markdown("---")
     
+    # Auto-refresh dashboard every 3 seconds
+    st.set_page_config(
+        page_title="Facilitator Dashboard",
+        page_icon="👨‍🏫",
+        layout="wide",
+    )
+    
+    # Add refresh button
+    col1, col2 = st.columns([5, 1])
+    with col2:
+        if st.button("🔄 Refresh Now", use_container_width=True):
+            st.rerun()
+    
+    st.markdown("---")
+    
     # Dashboard content
     tab1, tab2, tab3 = st.tabs(["📊 Overview", "💡 Coaching Tips", "📋 Sprint Checklist"])
     
     with tab1:
         st.header("Workshop Overview")
         
+        # Get team progress summary
+        summary = get_teams_summary()
+        
         col1, col2, col3 = st.columns(3)
         
         with col1:
-            st.metric("Active Teams", "Check main app sessions")
-            st.caption("Monitor participant activity in the main app")
+            st.metric("Total Teams", summary["total_teams"])
         
         with col2:
-            if st.session_state.get("start_time"):
-                elapsed = datetime.now() - st.session_state.start_time
-                minutes = int(elapsed.total_seconds() / 60)
-                st.metric("Workshop Duration", f"{minutes} min")
-            else:
-                st.metric("Workshop Duration", "Not started")
+            st.metric("Teams Started", f"{summary['teams_started']}/{summary['total_teams']}")
         
         with col3:
-            st.metric("Total Steps", "6")
-            st.caption("Design sprint structure")
+            st.metric("Teams Completed", f"{summary['teams_completed']}/{summary['total_teams']}")
+        
+        st.markdown("---")
+        
+        st.subheader("📊 Team Progress")
+        
+        if summary["teams"]:
+            # Create a table view of team progress
+            team_data_display = []
+            for team in summary["teams"]:
+                status = "✅ Completed" if team["completed"] else ("▶️ In Progress" if team["started"] else "⏳ Not Started")
+                team_data_display.append({
+                    "Team Name": team["name"],
+                    "Program Card": team["program"],
+                    "Status": status,
+                    "Current Step": team["current_step"] if team["started"] else "-",
+                    "Started At": team["started_at"][:16] if team["started_at"] else "-"
+                })
+            
+            st.dataframe(
+                team_data_display,
+                use_container_width=True,
+                hide_index=True,
+            )
+            
+            st.caption("💡 Auto-refreshes every 5 seconds to show real-time team progress")
+            st.markdown("""
+            **Status Legend:**
+            - ⏳ **Not Started** - Team entered but hasn't started design sprint
+            - ▶️ **In Progress** - Team is working through the 6 steps
+            - ✅ **Completed** - Team finished all steps
+            """)
+        else:
+            st.info("👥 No teams have joined yet. Teams appear here once they enter their name and select a program card.")
         
         st.markdown("---")
         
         st.subheader("📝 Session Notes")
-        facilitator_notes = st.text_area(
+        st.text_area(
             "Your facilitator notes (local session only)",
-            height=200,
+            height=150,
             placeholder="Track observations, common questions, timing adjustments...",
             key="facilitator_notes"
         )

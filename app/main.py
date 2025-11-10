@@ -11,6 +11,7 @@ from datetime import datetime
 import sys
 from pathlib import Path
 import pandas as pd
+import json
 
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent))
@@ -41,6 +42,47 @@ for key, value in DEFAULT_SESSION_STATE.items():
 def initialize_session():
     """Initialize session state with defaults."""
     st.session_state.start_time = datetime.now()
+
+
+def get_team_progress_file():
+    """Get the path to the team progress tracking file."""
+    return Path(__file__).parent.parent / "data" / "team_progress.json"
+
+
+def update_team_progress(team_name, program_card, started=False, current_step=1, completed=False):
+    """Update team progress in the tracking file."""
+    progress_file = get_team_progress_file()
+    progress_file.parent.mkdir(parents=True, exist_ok=True)
+    
+    # Load existing data
+    team_data = {}
+    if progress_file.exists():
+        try:
+            with open(progress_file, "r") as f:
+                team_data = json.load(f)
+        except (json.JSONDecodeError, IOError):
+            team_data = {}
+    
+    # Update this team's data
+    if team_name not in team_data:
+        team_data[team_name] = {}
+    
+    team_data[team_name]["program_card"] = program_card
+    if started and not team_data[team_name].get("started"):
+        team_data[team_name]["started"] = True
+        team_data[team_name]["started_at"] = datetime.now().isoformat()
+    team_data[team_name]["current_step"] = current_step
+    
+    if completed and not team_data[team_name].get("completed"):
+        team_data[team_name]["completed"] = True
+        team_data[team_name]["completed_at"] = datetime.now().isoformat()
+    
+    # Write back to file
+    try:
+        with open(progress_file, "w") as f:
+            json.dump(team_data, f, indent=2)
+    except IOError:
+        pass  # Silently fail if we can't write
 
 
 def render_header():
@@ -233,6 +275,13 @@ def main():
                 st.rerun()
         with col2:
             if st.button("▶️ Start Design Sprint", use_container_width=True, key="start_sprint"):
+                # Track that this team started the sprint
+                update_team_progress(
+                    st.session_state.team_name,
+                    st.session_state.program_card_selected,
+                    started=True,
+                    current_step=2
+                )
                 st.session_state.current_step = 2
                 st.rerun()
         
@@ -406,9 +455,24 @@ def render_design_workbook():
         if current < len(WORKBOOK_STEPS) - 1:
             if st.button("Next Step →", type="primary", use_container_width=True):
                 st.session_state.workbook_step += 1
+                # Update team progress with new step
+                update_team_progress(
+                    st.session_state.team_name,
+                    st.session_state.program_card_selected,
+                    started=True,
+                    current_step=step['number'] + 1
+                )
                 st.rerun()
         else:
             if st.button("Complete & Randomize →", type="primary", use_container_width=True):
+                # Mark team as completed
+                update_team_progress(
+                    st.session_state.team_name,
+                    st.session_state.program_card_selected,
+                    started=True,
+                    current_step=len(WORKBOOK_STEPS),
+                    completed=True
+                )
                 st.success("✅ Workbook completed! Proceeding to randomization...")
                 st.switch_page("pages/randomization.py")
 

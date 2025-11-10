@@ -119,7 +119,7 @@ WORKBOOK_STEPS = [
         "fields": [
             {"key": "program_title", "label": "Program title", "type": "text"},
             {"key": "target_group", "label": "Target group", "type": "text"},
-            {"key": "delivery_setting", "label": "Delivery setting", "type": "text"},
+            {"key": "delivery_setting", "label": "Delivery setting", "type": "text", "placeholder": "e.g. Facilitators lead biweekly sessions with female participants in school classrooms"},
             {"key": "success_statement", "label": "Success in 12 months looks like", "type": "textarea", "rows": 3},
         ],
     },
@@ -130,7 +130,7 @@ WORKBOOK_STEPS = [
         "actions": [
             "List the major activities and the immediate outputs you can measure.",
             "Highlight the outcomes that must shift before your long-term impact appears.",
-            "Flag the assumptions that feel riskiest or hardest to prove.",
+            "Flag assumptions that you're least confident about, that are most critical for success, or that are hardest to verify with data (e.g., spillovers, contamination, or behavioral changes).",
         ],
         "tip": "If you cannot draw a tight line from activity to outcome, consider narrowing scope.",
         "fields": [

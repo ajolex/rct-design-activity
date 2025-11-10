@@ -254,12 +254,6 @@ def generate_html_report(team_name: str, design_data: dict, randomization_data=N
                 {_generate_design_section(design_data)}
             </div>
             
-            <!-- Sample Data -->
-            <div class="section">
-                <h2>📊 Sample Data Generated</h2>
-                {_generate_sample_data_section(design_data)}
-            </div>
-            
             <!-- Randomization Results -->
             {_generate_randomization_section(randomization_data) if randomization_data is not None else ''}
             
@@ -344,7 +338,7 @@ def _generate_design_section(design_data: dict) -> str:
     
     html = f"""
     <div class="design-element">
-        <h3>Research Question</h3>
+        <h3>Objective(s)</h3>
         <p>{research_question}</p>
     </div>
     
@@ -448,20 +442,25 @@ def _generate_randomization_files_summary(randomization_files) -> str:
     
     html = """
     <div class="section">
-        <h2>� Randomization Summary</h2>
+        <h2>🎲 Randomization Summary</h2>
+    """
+    
+    # Add uploaded files list if present
+    if summary["file_names"]:
+        html += """
         <div class="info-box">
             <h3>Uploaded Randomization Files</h3>
             <p>The following randomization result files are included with this report:</p>
             <ul>
-    """
-    
-    for file_name in summary["file_names"]:
-        html += f"<li>{file_name}</li>"
-    
-    html += """
+        """
+        
+        for file_name in summary["file_names"]:
+            html += f"<li>{file_name}</li>"
+        
+        html += """
             </ul>
         </div>
-    """
+        """
     
     # Add treatment distribution table
     if summary["treatment_counts"] is not None:
@@ -539,6 +538,7 @@ def _extract_randomization_summary(randomization_files) -> dict:
     for file in randomization_files:
         try:
             file_name_lower = file.name.lower()
+            summary["file_names"].append(file.name)
             
             # Try to read as CSV or Excel
             if file.type == "text/csv":
@@ -552,12 +552,16 @@ def _extract_randomization_summary(randomization_files) -> dict:
                 treatment_col = treatment_cols[0]
                 summary["treatment_counts"] = df[treatment_col].value_counts().sort_index()
             
-            # Look for balance table (typically has multiple outcome/baseline columns)
+            # Look for balance table - if file contains "balance" in name or has many columns
             if 'balance' in file_name_lower and summary["balance_table"] is None:
                 summary["balance_table"] = df
-            
-            summary["file_names"].append(file.name)
-        except Exception:
+            # Also check if this looks like a balance table (many numeric columns)
+            elif summary["balance_table"] is None and len(df.select_dtypes(include=['number']).columns) > 2:
+                # If it's not a treatment file, might be balance table
+                if not treatment_cols or len(df.columns) > 3:
+                    summary["balance_table"] = df
+        
+        except Exception as e:
             pass  # Skip files that can't be read
     
     return summary

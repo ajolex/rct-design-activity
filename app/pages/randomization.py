@@ -113,104 +113,24 @@ def display_export_section():
     
     with col2:
         st.markdown("""
-        **Step 2: Upload Results**
-        - Upload your exported CSV file below
+        **Step 2: Save Your Results**
+        - Keep your exported CSV file
         - Include key columns: participant ID, treatment assignment
         - Optional: include balance covariates
         """)
     
     with col3:
         st.markdown("""
-        **Step 3: Verify & Save**
-        - Review the randomization summary
-        - Store for final report
-        - Track for reproducibility
+        **Step 3: Upload to Report**
+        - Upload your randomization files in the Report Generation page
+        - They will be included in your final report
+        - Keep files for reproducibility
         """)
     
     st.markdown("---")
-    st.markdown("#### 📤 Upload Your Randomization Results")
-    
-    # File upload
-    uploaded_file = st.file_uploader(
-        "Upload randomized dataset (CSV)",
-        type=["csv"],
-        help="This should be the randomized data exported from RCT Field Flow"
-    )
-    
-    if uploaded_file is not None:
-        # Read the uploaded file
-        try:
-            df = pd.read_csv(uploaded_file)
-            st.session_state.randomization_data = df
-            st.session_state.randomization_exported = True
-            
-            # Display summary
-            st.success("✅ Randomization data loaded successfully!")
-            
-            # Create tabs for viewing results
-            tab1, tab2, tab3 = st.tabs(["📊 Summary", "📋 Data Preview", "📈 Balance Check"])
-            
-            with tab1:
-                st.markdown("#### Randomization Summary")
-                
-                # Display basic info
-                cols = st.columns(3)
-                with cols[0]:
-                    st.metric("Total Participants", len(df))
-                with cols[1]:
-                    treatment_col = next((col for col in df.columns if 'treatment' in col.lower()), None)
-                    if treatment_col:
-                        st.metric("Treatment Columns Found", df[treatment_col].nunique())
-                with cols[2]:
-                    st.metric("Rows", len(df))
-                
-                # Treatment distribution
-                if treatment_col:
-                    st.markdown("##### Treatment Distribution")
-                    dist = df[treatment_col].value_counts()
-                    col1, col2 = st.columns([1, 2])
-                    with col1:
-                        st.dataframe(dist, use_container_width=True)
-                    with col2:
-                        st.bar_chart(dist)
-            
-            with tab2:
-                st.markdown("#### Data Preview")
-                st.dataframe(df, use_container_width=True)
-                
-                # Download button
-                csv = df.to_csv(index=False)
-                st.download_button(
-                    label="📥 Download Randomization Data",
-                    data=csv,
-                    file_name=f"randomization_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
-                    mime="text/csv"
-                )
-            
-            with tab3:
-                st.markdown("#### Balance Check Summary")
-                
-                # Display column statistics for balance assessment
-                st.markdown("**Numeric Columns Summary Statistics**")
-                numeric_cols = df.select_dtypes(include=['number']).columns
-                
-                if len(numeric_cols) > 0:
-                    st.dataframe(df[numeric_cols].describe(), use_container_width=True)
-                else:
-                    st.info("No numeric columns found for balance analysis")
-                
-                # Treatment-specific analysis if available
-                if treatment_col:
-                    st.markdown(f"**Summary by {treatment_col}**")
-                    for col in numeric_cols:
-                        if col != treatment_col:
-                            st.markdown(f"**{col}**")
-                            summary = df.groupby(treatment_col)[col].describe()
-                            st.dataframe(summary, use_container_width=True)
-        
-        except Exception as e:
-            st.error(f"❌ Error reading file: {str(e)}")
-            st.session_state.randomization_exported = False
+    st.info("""
+    📌 **Next Step:** Upload your randomization files when you generate your final report on the Report Generation page.
+    """)
 
 
 def display_next_steps():

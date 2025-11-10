@@ -227,11 +227,11 @@ def main():
         st.markdown("---")
         
         col1, col2 = st.columns(2)
-        with col2:
+        with col1:
             if st.button("📄 View Program Card", use_container_width=True):
                 st.session_state.current_step = 0
                 st.rerun()
-        with col1:
+        with col2:
             if st.button("▶️ Start Design Sprint", use_container_width=True, key="start_sprint"):
                 st.session_state.current_step = 2
                 st.rerun()

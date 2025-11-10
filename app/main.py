@@ -2,7 +2,7 @@
 RCT Design Activity: Main Streamlit App
 
 An interactive workshop application for designing randomized controlled trials.
-Participants work through a 6-step design sprint, from challenge framing through
+Participants work through a step-by-step design sprint, from challenge/problem framing through
 decision triggers, using realistic program cards and sample data.
 """
 
@@ -72,7 +72,7 @@ def render_sidebar():
             st.session_state.team_name = team_name
             st.success(f"✓ Team: {team_name}")
         else:
-            st.warning("⚠️ Please enter your team name to proceed")
+            st.warning("⚠️ Please enter your team name to get started.")
             return False
         
         st.divider()
@@ -159,14 +159,14 @@ def render_welcome_section():
         st.markdown("""
         ## 🚀 Ready to Design Your RCT?
         
-        This workshop will guide you through 6 key steps to turn your program concept into 
+        This workshop will guide you through key steps to turn your program concept into 
         a rigorous randomized controlled trial (RCT) design. You'll work as a team to:
         
         1. **Frame the Challenge** – Clarify your core problem and success vision
-        2. **Map the Theory of Change** – Connect your activities to outcomes
+        2. **Map the Theory of Change** – Connect your activities to outcomes 
         3. **Design Measurement** – Choose indicators and instruments
-        4. **Plan Randomization** – Select your assignment approach
-        5. **Safeguard Implementation** – Build operational rhythms and signals
+        4. **Plan Randomization** – Select your random assignment approach
+        5. **Safeguard Implementation** – Set up monitoring and adaptation mechanisms
         6. **Decide and Commit** – Record your decision trigger and next steps
         
         **Each section takes 3 minutes.** Work through in order, capture decisions, 
@@ -227,16 +227,15 @@ def main():
         st.markdown("---")
         
         col1, col2 = st.columns(2)
+        with col2:
+            if st.button("📄 View Program Card", use_container_width=True):
+                st.session_state.current_step = 0
+                st.rerun()
         with col1:
             if st.button("▶️ Start Design Sprint", use_container_width=True, key="start_sprint"):
                 st.session_state.current_step = 2
                 st.rerun()
         
-        with col2:
-            if st.button("📄 View Program Card", use_container_width=True):
-                st.session_state.current_step = 0
-                st.rerun()
-    
     else:
         # Show design workbook steps
         render_design_workbook()

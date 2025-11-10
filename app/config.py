@@ -6,10 +6,10 @@ import os
 APP_TITLE = "Design an RCT: Interactive Workshop Activity"
 APP_SUBTITLE = "Transform program concepts into rigorous randomized evaluations"
 APP_DESCRIPTION = """
-Work through a 6-step design sprint to turn your program idea into a randomized controlled trial (RCT) design. 
-This interactive workshop app guides your team from challenge framing through evaluation planning to randomization 
-and decision triggers. Use your assigned program card as the anchor, follow the workbook steps, generate realistic 
-sample data, and export your final design plan as a report.
+Work through a step-by-step design sprint to turn your program idea into a randomized controlled trial (RCT) design. 
+This interactive workshop app guides your team from challenge/problem framing through evaluation planning to randomization 
+and decision triggers. Use your assigned program card as the anchor, follow the workbook steps, use the realistic 
+sample data, and export your final design plan as a design plan report.
 """
 
 # ===== SESSION STATE DEFAULTS =====
@@ -38,7 +38,7 @@ PROGRAM_CARDS = {
         "sector": "Education",
         "theme": "Literacy",
         "context": {
-            "problem": "Malawi district schools report that 55% of grade 4 students read below grade level.",
+            "problem": "Malawi district schools report shows that 55% of grade 4 students read below grade level.",
             "resources": "Municipal government can second 60 teachers for remedial instruction.",
             "logistics": "After-school slots available in 40 schools across three sub-provinces.",
         },
@@ -169,11 +169,11 @@ WORKBOOK_STEPS = [
     {
         "number": 5,
         "title": "Safeguard Implementation",
-        "goal": "Make the plan operational with rhythms, resources, and quick signals.",
+        "goal": "Create systems and routines that help detect issues early and make informed adjustments without compromising the intervention’s integrity.",
         "actions": [
-            "Establish communication protocols to synchronize program rollout, monitoring, and data collection.",
+            "Establish mechanisms to ensure the intervention is delivered as planned..",
             "Capture logistics that could slow you down and draft mitigation steps.",
-            "Select an interim indicator or dashboard you will review during rollout.",
+            "Data Quality and Progress Tracking: track key indicators and prevent data loss or quality issues",
         ],
         "tip": "Assign a lead person to each risk so follow-up happens quickly.",
         "fields": [
@@ -184,10 +184,11 @@ WORKBOOK_STEPS = [
     {
         "number": 6,
         "title": "Decide and Commit",
-        "goal": "Record the trigger that will guide your next decision once data arrives.",
+        "goal": "Moving from design to action by setting clear decision triggers and next steps.",
         "actions": [
-            "State the metric and threshold that signals scale, revise, or stop.",
-            "Note who needs to see the results and how they prefer updates.",
+            "Decide: Agree as a team on whether (and when) to proceed with the RCT as designed",
+            "Commit: Formalize your next steps and responsibilities — who does what, by when — to move the design forward",
+            "Decision checklist: Is the design feasible? Are partners and funding in place? Are ethical and logistical conditions ready?",
         ],
         "tip": "Be concrete: threshold, time frame, and decision owner.",
         "fields": [
@@ -199,7 +200,7 @@ WORKBOOK_STEPS = [
 ]
 
 # ===== RANDOMIZATION CONFIG =====
-RCT_FIELD_FLOW_URL = "https://ajolex.github.io/rct_field_flow"  # Update with your actual deployment URL
+RCT_FIELD_FLOW_URL = "https://ajolex.github.io/rct_field_flow"
 RCT_FIELD_FLOW_GITHUB = "https://github.com/ajolex/rct_field_flow"
 
 # ===== REPORT CONFIG =====
@@ -259,8 +260,7 @@ PROGRAM_CARDS_PATH = os.path.join(DATA_PATH, "program_cards")
 # ===== GUIDANCE TEXT =====
 PARTICIPANT_GUIDANCE = [
     "Move in order but keep the pace brisk. Aim to make decisions, not perfect prose.",
-    "Write directly in the boxes. Add sticky notes or sketches where helpful.",
-    "Return to prompts marked with [ ] if you need to revisit them during the gallery walk.",
+    "Write directly in the boxes.",
 ]
 
 SPRINT_CHECKLIST = [

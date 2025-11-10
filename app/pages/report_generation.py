@@ -6,6 +6,8 @@ Combines all participant responses and design decisions.
 import streamlit as st
 from datetime import datetime
 import pandas as pd
+import io
+import zipfile
 
 # Configure page
 st.set_page_config(
@@ -19,8 +21,11 @@ if "report_generated" not in st.session_state:
     st.session_state.report_generated = False
 
 
-def generate_html_report(team_name: str, design_data: dict, randomization_data=None) -> str:
+def generate_html_report(team_name: str, design_data: dict, randomization_data=None, randomization_files=None) -> str:
     """Generate comprehensive HTML report of RCT design activity for a specific team."""
+    
+    if randomization_files is None:
+        randomization_files = []
     
     timestamp = datetime.now().strftime("%B %d, %Y at %H:%M:%S")
     
@@ -258,6 +263,9 @@ def generate_html_report(team_name: str, design_data: dict, randomization_data=N
             <!-- Randomization Results -->
             {_generate_randomization_section(randomization_data) if randomization_data is not None else ''}
             
+            <!-- Randomization Files Summary -->
+            {_generate_randomization_files_summary(randomization_files) if randomization_files else ''}
+            
             <!-- Key Takeaways -->
             <div class="section">
                 <h2>✅ Key Takeaways</h2>
@@ -425,6 +433,131 @@ def _generate_randomization_section(randomization_data: pd.DataFrame) -> str:
     return html
 
 
+def _generate_randomization_files_summary(randomization_files) -> str:
+    """Generate a summary section for uploaded randomization files with tabulated summaries."""
+    if not randomization_files:
+        return ""
+    
+    # Extract summary data
+    summary = _extract_randomization_summary(randomization_files)
+    
+    html = """
+    <div class="section">
+        <h2>� Randomization Summary</h2>
+        <div class="info-box">
+            <h3>Uploaded Randomization Files</h3>
+            <p>The following randomization result files are included with this report:</p>
+            <ul>
+    """
+    
+    for file_name in summary["file_names"]:
+        html += f"<li>{file_name}</li>"
+    
+    html += """
+            </ul>
+        </div>
+    """
+    
+    # Add treatment distribution table
+    if summary["treatment_counts"] is not None:
+        html += """
+        <h3>Treatment Assignment Distribution</h3>
+        <table>
+            <tr>
+                <th>Treatment Arm</th>
+                <th>Count</th>
+                <th>Percentage</th>
+            </tr>
+        """
+        
+        total = summary["treatment_counts"].sum()
+        for arm, count in summary["treatment_counts"].items():
+            pct = (count / total) * 100
+            html += f"<tr><td>{arm}</td><td>{count}</td><td>{pct:.1f}%</td></tr>"
+        
+        html += """
+        </table>
+        """
+    
+    # Add balance table preview
+    if summary["balance_table"] is not None:
+        html += """
+        <h3 style="margin-top: 30px;">Balance Table Summary</h3>
+        <p style="font-size: 0.9em; color: #666; margin-bottom: 10px;">First 10 rows of balance statistics</p>
+        <table style="font-size: 0.85em;">
+            <tr>
+        """
+        
+        # Add column headers
+        for col in summary["balance_table"].columns[:8]:  # Limit to 8 columns for readability
+            html += f"<th>{col}</th>"
+        
+        html += """
+            </tr>
+        """
+        
+        # Add rows
+        for idx, row in summary["balance_table"].head(10).iterrows():
+            html += "<tr>"
+            for col in summary["balance_table"].columns[:8]:
+                val = row[col]
+                if isinstance(val, float):
+                    val = f"{val:.3f}"
+                html += f"<td>{val}</td>"
+            html += "</tr>"
+        
+        if len(summary["balance_table"]) > 10:
+            html += f"<tr><td colspan='{min(8, len(summary['balance_table'].columns))}' style='text-align: center; font-style: italic; color: #999;'>... {len(summary['balance_table']) - 10} more rows</td></tr>"
+        
+        html += """
+        </table>
+        """
+    
+    html += """
+    </div>
+    """
+    
+    return html
+
+
+def _extract_randomization_summary(randomization_files) -> dict:
+    """Extract treatment distribution and balance table from uploaded files."""
+    summary = {
+        "treatment_counts": None,
+        "balance_table": None,
+        "file_names": []
+    }
+    
+    if not randomization_files:
+        return summary
+    
+    for file in randomization_files:
+        try:
+            file_name_lower = file.name.lower()
+            
+            # Try to read as CSV or Excel
+            if file.type == "text/csv":
+                df = pd.read_csv(file)
+            else:
+                df = pd.read_excel(file)
+            
+            # Look for treatment column
+            treatment_cols = [col for col in df.columns if 'treat' in col.lower()]
+            if treatment_cols and summary["treatment_counts"] is None:
+                treatment_col = treatment_cols[0]
+                summary["treatment_counts"] = df[treatment_col].value_counts().sort_index()
+            
+            # Look for balance table (typically has multiple outcome/baseline columns)
+            if 'balance' in file_name_lower and summary["balance_table"] is None:
+                summary["balance_table"] = df
+            
+            summary["file_names"].append(file.name)
+        except Exception:
+            pass  # Skip files that can't be read
+    
+    return summary
+
+
 def display_report_options():
     """Display report generation options."""
     st.markdown("### 📋 Report Generation Options")
@@ -560,6 +693,68 @@ def main():
     display_report_options()
     
     st.markdown("---")
+    
+    # Randomization results upload section
+    st.markdown("### 📊 Upload Randomization Results (Optional)")
+    st.info("""
+    📎 Upload files related to your randomization:
+    - Treatment assignment file (CSV, Excel)
+    - Balance tables (CSV, Excel, PDF)
+    - Randomization details/logs
+    """)
+    
+    # Initialize randomization files storage in session state
+    if "randomization_files" not in st.session_state:
+        st.session_state.randomization_files = []
+    
+    # File uploader for randomization results
+    uploaded_files = st.file_uploader(
+        "Choose randomization result files",
+        type=["csv", "xlsx", "xls", "pdf", "txt"],
+        accept_multiple_files=True,
+        help="You can upload multiple files: treatment assignments, balance tables, etc."
+    )
+    
+    if uploaded_files:
+        # Store uploaded files in session state
+        st.session_state.randomization_files = uploaded_files
+        
+        st.success(f"✅ {len(uploaded_files)} file(s) uploaded successfully!")
+        
+        # Extract and display randomization summary
+        summary = _extract_randomization_summary(uploaded_files)
+        
+        # Display uploaded files
+        with st.expander("📂 View Uploaded Files", expanded=False):
+            for idx, file in enumerate(uploaded_files, 1):
+                st.markdown(f"**{idx}. {file.name}** ({file.size/1024:.1f} KB)")
+                
+                # Try to display preview for CSV files
+                if file.type in ["text/csv", "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]:
+                    try:
+                        df = pd.read_csv(file) if file.type == "text/csv" else pd.read_excel(file)
+                        st.dataframe(df.head(), use_container_width=True)
+                    except Exception:
+                        st.caption("(Preview not available for this file)")
+                else:
+                    st.caption(f"File type: {file.type}")
+        
+        # Display randomization summary
+        if summary["treatment_counts"] is not None:
+            st.markdown("**Treatment Assignment Summary:**")
+            treatment_df = pd.DataFrame({
+                "Treatment Arm": summary["treatment_counts"].index,
+                "Count": summary["treatment_counts"].values,
+                "Percentage": (summary["treatment_counts"].values / summary["treatment_counts"].sum() * 100).round(1)
+            })
+            st.dataframe(treatment_df, use_container_width=True, hide_index=True)
+        
+        if summary["balance_table"] is not None:
+            st.markdown("**Balance Table Preview:**")
+            balance_preview = summary["balance_table"].head(10)
+            st.dataframe(balance_preview, use_container_width=True)
+    
+    st.markdown("---")
     st.markdown("### 📝 Generate Your Report")
     
     # Gather team's actual responses from workbook
@@ -567,6 +762,7 @@ def main():
     
     # Get randomization data if available
     randomization_data = st.session_state.get("randomization_data", None)
+    randomization_files = st.session_state.get("randomization_files", [])
     
     # Export format selection
     export_format = st.radio(
@@ -580,16 +776,40 @@ def main():
     if st.button("📄 Generate Report", use_container_width=True, type="primary"):
         
         if export_format == "HTML":
-            # Generate HTML report with team name
-            html_report = generate_html_report(team_name, design_data, randomization_data)
+            # Generate HTML report with team name and randomization files
+            html_report = generate_html_report(team_name, design_data, randomization_data, randomization_files)
             
             # Display in browser
             st.success("✅ Report generated successfully!")
             st.markdown("---")
             
+            # Create a zip file with report and randomization files
+            zip_buffer = io.BytesIO()
+            with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+                # Add HTML report
+                zip_file.writestr(
+                    f"RCT_Design_Report_{team_name.replace(' ', '_')}.html",
+                    html_report
+                )
+                
+                # Add uploaded randomization files
+                for file in randomization_files:
+                    zip_file.writestr(file.name, file.getbuffer())
+            
+            zip_buffer.seek(0)
+            
             # Download button with team name in filename
             st.download_button(
-                label="📥 Download HTML Report",
+                label="📥 Download HTML Report + Randomization Files (ZIP)",
+                data=zip_buffer.getvalue(),
+                file_name=f"RCT_Design_Report_{team_name.replace(' ', '_')}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.zip",
+                mime="application/zip",
+                use_container_width=True
+            )
+            
+            # Also offer direct HTML download
+            st.download_button(
+                label="📄 Download HTML Report Only",
                 data=html_report,
                 file_name=f"RCT_Design_Report_{team_name.replace(' ', '_')}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.html",
                 mime="text/html",

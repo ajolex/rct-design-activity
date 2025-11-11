@@ -4,8 +4,6 @@ Provides interface for participants to randomize their designed experiments.
 """
 
 import streamlit as st
-from datetime import datetime
-import pandas as pd
 
 # Configure page
 st.set_page_config(
@@ -189,7 +187,7 @@ def main():
     
     with col1:
         if st.button("← Back to Design", use_container_width=True):
-            st.switch_page("pages/design_workbook.py")
+            st.switch_page("app/main.py")
     
     with col3:
         if st.session_state.randomization_exported:

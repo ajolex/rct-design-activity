@@ -85,6 +85,42 @@ def update_team_progress(team_name, program_card, started=False, current_step=1,
         pass  # Silently fail if we can't write
 
 
+def get_workbook_file(team_name):
+    """Get the path to the workbook responses file for a team."""
+    if not team_name:
+        return None
+    data_dir = Path(__file__).parent.parent / "data" / "workbooks"
+    data_dir.mkdir(parents=True, exist_ok=True)
+    # Create a safe filename from team name
+    safe_name = "".join(c for c in team_name if c.isalnum() or c in (' ', '-', '_')).strip()
+    safe_name = safe_name.replace(' ', '_')
+    return data_dir / f"{safe_name}_workbook.json"
+
+
+def save_workbook_responses(team_name, responses):
+    """Save workbook responses to disk."""
+    workbook_file = get_workbook_file(team_name)
+    if workbook_file:
+        try:
+            workbook_file.parent.mkdir(parents=True, exist_ok=True)
+            with open(workbook_file, "w") as f:
+                json.dump(responses, f, indent=2)
+        except IOError:
+            pass  # Silently fail if we can't write
+
+
+def load_workbook_responses(team_name):
+    """Load workbook responses from disk."""
+    workbook_file = get_workbook_file(team_name)
+    if workbook_file and workbook_file.exists():
+        try:
+            with open(workbook_file, "r") as f:
+                return json.load(f)
+        except (json.JSONDecodeError, IOError):
+            return {}
+    return {}
+
+
 def render_header():
     """Render app header with title and introduction."""
     st.markdown("<div class='main-title'>🎯 Design an RCT</div>", unsafe_allow_html=True)
@@ -112,6 +148,9 @@ def render_sidebar():
         
         if team_name:
             st.session_state.team_name = team_name
+            # Load previously saved responses for this team
+            if 'workbook_responses' not in st.session_state or not st.session_state.workbook_responses:
+                st.session_state.workbook_responses = load_workbook_responses(team_name)
             st.success(f"✓ Team: {team_name}")
         else:
             st.warning("⚠️ Please enter your team name to get started.")
@@ -434,6 +473,11 @@ def render_design_workbook():
                 )
             
             st.session_state.workbook_responses[field_key] = value
+    
+    # Auto-save responses to disk
+    team_name = st.session_state.get("team_name", "")
+    if team_name:
+        save_workbook_responses(team_name, st.session_state.workbook_responses)
     
     # Navigation
     st.markdown("---")

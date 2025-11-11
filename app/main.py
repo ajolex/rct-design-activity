@@ -412,11 +412,13 @@ def render_design_workbook():
         for field in step['fields']:
             field_key = f"step{step['number']}_{field['key']}"
             value = ""
+            placeholder = field.get('placeholder', '')
             
             if field['type'] == 'text':
                 value = st.text_input(
                     field['label'],
                     value=st.session_state.workbook_responses.get(field_key, ''),
+                    placeholder=placeholder,
                     key=field_key,
                     label_visibility="visible"
                 )
@@ -425,6 +427,7 @@ def render_design_workbook():
                 value = st.text_area(
                     field['label'],
                     value=st.session_state.workbook_responses.get(field_key, ''),
+                    placeholder=placeholder,
                     key=field_key,
                     height=rows * 35,
                     label_visibility="visible"
